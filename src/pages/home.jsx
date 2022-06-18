@@ -3,6 +3,7 @@ import Layout from "../components/Layout/Layout";
 import axios from "axios";
 import Pagination from "../components/Ui/pagination";
 import Posts from "../components/Pages/home/Posts";
+import Loading from "../components/Ui/Loading";
 const HomeDetailsPage = function () {
   const [posts, setPosts] = useState(null);
   const [requestStatus, setRequestStatus] = useState({
@@ -41,8 +42,10 @@ const HomeDetailsPage = function () {
           />
         </>
       )}
-      {requestStatus.loading && <p>loading...</p>}
-      {requestStatus.error && <p className="text-red-500 text-center">{requestStatus.error}</p>}
+       {requestStatus.loading && <Loading/>}
+      {requestStatus.error && (
+        <p className="text-red-500 text-center">{requestStatus.error}</p>
+      )}
     </Layout>
   );
 };
