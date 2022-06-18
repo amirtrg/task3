@@ -4,8 +4,15 @@ import axios from "axios";
 import Pagination from "../components/Ui/pagination";
 import Posts from "../components/Pages/home/Posts";
 import Loading from "../components/Ui/Loading";
+import { useSelector, useDispatch } from "react-redux";
+import { getAll, addOne } from "./../store/reducers/getProduct";
+import { productsList } from "../store/reducers/getProduct";
+
 const HomeDetailsPage = function () {
-  const [posts, setPosts] = useState(null);
+  const postsState = useSelector(productsList);
+
+  console.log(postsState);
+  const dispatch = useDispatch();
   const [requestStatus, setRequestStatus] = useState({
     loading: false,
     error: null,
@@ -20,21 +27,22 @@ const HomeDetailsPage = function () {
         `
       )
       .then((response) => {
-        setPosts(response.data || null);
+        // setPosts(response.data || null);
+        dispatch(getAll(response.data || null));
         setRequestStatus({ loading: false, error: null });
       })
       .catch((error) => {
         setRequestStatus({ loading: false, error: error.message });
-        setPosts(null);
+        // setPosts(null);
       });
-  }, [pageNumber]);
+  }, [pageNumber,]);
 
   return (
     <Layout>
       <div>Home Detail page</div>
-      {posts && !requestStatus.loading && (
+      {postsState  && (
         <>
-          <Posts data={posts} />
+          <Posts data={postsState} />
           <Pagination
             pageNumber={pageNumber}
             setPageNumber={setPageNumber}
@@ -42,7 +50,7 @@ const HomeDetailsPage = function () {
           />
         </>
       )}
-       {requestStatus.loading && <Loading/>}
+      {requestStatus.loading && <Loading />}
       {requestStatus.error && (
         <p className="text-red-500 text-center">{requestStatus.error}</p>
       )}
