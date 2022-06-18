@@ -1,18 +1,33 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import Card from "../../Ui/Card";
+import { useNavigate } from "react-router-dom";
 
 function Posts({ data }) {
+  let navigate = useNavigate();
   return (
-    <div className="grid gap-2 py-4">
-      {data.map((post) => (
-        <Link to={`posts/${post.id}`} key={post.id}>
-          <Card key={post.id}>
-            <h1 className="text-sm">{post.title}</h1>
-          </Card>
-        </Link>
-      ))}
-    </div>
+    <table className="table-auto border w-full border-collapse my-4">
+      <thead className="bg-gray-200 ">
+        <tr>
+          <th className="p-2">id</th>
+          <th className="p-2">user id</th>
+          <th className="p-2">title</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((post) => (
+          <tr
+            key={post.id}
+            className=" even:bg-gray-100 cursor-pointer "
+            onClick={function () {
+              navigate(`posts/${post.id}`);
+            }}
+          >
+            <td className="p-2">{post.id}</td>
+            <td className="p-2">{post.userId}</td>
+            <td className="p-2 text-sm">{post.title}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }
 
